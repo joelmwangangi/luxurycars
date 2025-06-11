@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Your Ride - Luxury Rides Kenya</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f9f9f9; color: #333; }
+    header { background: #000; color: #fff; padding: 30px 0; text-align: center; }
+    nav { background: #333; padding: 10px; text-align: center; }
+    nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
+    .container { max-width: 600px; margin: 30px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 15px; }
+    input, select, textarea { width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; }
+    button { margin-top: 20px; padding: 15px 30px; background: #e74c3c; color: #fff; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    .preview { margin-top: 30px; background: #fafafa; padding: 15px; border-radius: 5px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Book Your Ride</h1>
+  <p>Fill the form below to reserve your luxury car</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="booking.html">Book Now</a>
+</nav>
+
+<div class="container">
+  <form id="bookingForm">
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" required>
+
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" required>
+
+    <label for="car">Select Car:</label>
+    <select id="car" required>
+      <option value="">--Select--</option>
+      <option>Toyota Mark X</option>
+      <option>Lamborghini Urus</option>
+      <option>Range Rover Sport</option>
+      <option>BMW M3</option>
+      <option>BMW M5</option>
+      <option>Audi RS7</option>
+      <option>Audi RSQ8</option>
+      <option>Porsche Cayenne</option>
+      <option>Mercedes E63S AMG</option>
+    </select>
+
+    <label for="date">Booking Date:</label>
+    <input type="date" id="date" required>
+
+    <label for="days">Number of Days:</label>
+    <input type="number" id="days" min="1" required>
+
+    <button type="submit">Submit Booking</button>
+  </form>
+
+  <div class="preview">
+    <h3>Preview Bookings</h3>
+    <ul id="bookingList"></ul>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('bookingForm');
+  const bookingList = document.getElementById('bookingList');
+
+  function loadBookings() {
+    bookingList.innerHTML = '';
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    bookings.forEach((b, index) => {
+      const li = document.createElement('li');
+      li.textContent = `${b.name} - ${b.car} - ${b.date} for ${b.days} days`;
+      bookingList.appendChild(li);
+    });
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const booking = {
+      name: document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      car: document.getElementById('car').value,
+      date: document.getElementById('date').value,
+      days: document.getElementById('days').value
+    };
+    const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    bookings.push(booking);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    loadBookings();
+    form.reset();
+  });
+
+  window.onload = loadBookings;
+</script>
+
+</body>
+</html>
